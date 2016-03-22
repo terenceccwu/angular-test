@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html ng-app='gmap'>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+    <script src="./controller.js"></script>
+    <script src="./gservice.js"></script>
+  </head>
+  <body ng-controller='MapController as mapcont'>
+    <div id='map' style="width: 500px; height: 500px"></div>
+    <input type="number" step="0.001" ng-model="mapcont.lat" ng-change="mapcont.refresh()">
+    <input type="number" step="0.001" ng-model="mapcont.lng" ng-change="mapcont.refresh()">
+    <h3>{{mapcont.lat}},{{mapcont.lng}}</h3>
+    <button type="button" ng-click="mapcont.click()"></button>
+
+    <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBkhs7rfZT4W6AEiiarKPkmvdpnUYCXKPc'></script>
+  </body>
+</html>
