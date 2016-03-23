@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html ng-app="Listener">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+    <script src="./listener.js"></script>
+  </head>
+  <body ng-controller="myController as mycont">
+    <h1>{{mycont.hihi}}</h1>
+    <button type="button" ng-click="mycont.click()">emit</button>
+  </body>
+</html>
