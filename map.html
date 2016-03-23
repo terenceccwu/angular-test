@@ -12,8 +12,14 @@
     <input type="number" step="0.001" ng-model="mapcont.lat" ng-change="mapcont.refresh()">
     <input type="number" step="0.001" ng-model="mapcont.lng" ng-change="mapcont.refresh()">
     <h3>{{mapcont.lat}},{{mapcont.lng}}</h3>
-    <button type="button" ng-click="mapcont.click()"></button>
+    <button type="button" ng-click="mapcont.search()">Search!</button>
+    <button type="button" ng-click="mapcont.delete()">Clear!</button>
 
-    <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBkhs7rfZT4W6AEiiarKPkmvdpnUYCXKPc'></script>
+    <ul ng-repeat="p in mapcont.places">
+      <li>{{p}}</li>
+    </ul>
+
+    <button type="button" ng-click="mapcont.save()">Save!</button>
+    <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBkhs7rfZT4W6AEiiarKPkmvdpnUYCXKPc&libraries=places'></script>
   </body>
 </html>

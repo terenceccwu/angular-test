@@ -1,31 +1,73 @@
-var gmap = angular.module('gmap', ['gservice'])
-.controller('MapController', ['gservice', '$scope',function (gservice, $scope) {
+var gmap = angular.module('gmap', [])
+.controller('MapController', ['$scope',function ($scope) {
   var self = this;
   this.lat = 22.3782353;
   this.lng = 114.1807784;
 
-  this.refresh = function () {
-    gservice.refresh(this.lat, this.lng);
-  }
-
-  gservice.map.addListener('click', function (event) {
-    self.lat = event.latLng.lat();
-    self.lng = event.latLng.lng();
-    gservice.map.setCenter({lat: self.lat, lng: self.lng});
-    $scope.$apply();
-    console.log("applied");
+  var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: {lat: this.lat, lng: this.lng}
   });
 
-  // gservice.click(self);
+  map.addListener('click',function (event) {
+    self.lat = event.latLng.lat();
+    self.lng = event.latLng.lng();
+    $scope.$apply();
+  });
 
 
-  this.click = function () {
-    console.log(typeof self.lat);
+  var service = new google.maps.places.PlacesService(map);
+  this.search = function () {
+    var request = {
+      bounds: map.getBounds(),
+      type: ['store']
+    }
+    service.nearbySearch(request, function(results, status) {
+        console.log(results);
+        results.forEach(function(r) {
+          console.log(r.name);
+          createMarker(r);
+        });
+      });
   }
-  [
-    {name: 'place1', time: '10:00'},
-    {name: 'place2', time: '11:00'},
-    {name: 'place3', time: '12:00'},
-  ]
 
+
+  this.places = [];
+  
+  var markers = [];
+  function createMarker(place) {
+    var placeLoc = place.geometry.location;
+    var marker = new google.maps.Marker({
+      map: map,
+      position: place.geometry.location,
+
+    });
+    var infowindow = new google.maps.InfoWindow();
+
+    google.maps.event.addListener(marker, 'mouseover', function() {
+      infowindow.setContent("<b>" +place.name + "</b>");
+      infowindow.open(map, this);
+    });
+    google.maps.event.addListener(marker, 'mouseout', function() {
+      infowindow.close();
+    });
+    google.maps.event.addListener(marker, 'dblclick', function() {
+      self.places.push(place.name);
+      $scope.$apply();
+    });
+
+    markers.push(marker);
+  }
+
+  this.delete = function () {
+    markers.forEach(function (m) {
+      console.log(123);
+      m.setMap(null);
+    });
+    markers = [];
+  }
+
+  this.save = function () {
+    window.alert(this.places);
+  }
 }]);
